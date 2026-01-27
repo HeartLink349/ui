@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Christmas 2026 - Rawda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --dark-green-bg: #000800;
+            --mid-green-bg: #001a00;
+            --top-bg: #000000;
+            --card-green: rgba(0, 20, 0, 0.85);
+            --neon-green: #00ff00;
+        }
+
+        body {
+            background: linear-gradient(0deg, var(--dark-green-bg) 0%, var(--mid-green-bg) 40%, var(--top-bg) 100%);
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
+            font-family: 'Cairo', sans-serif; overflow: hidden; perspective: 2000px;
+            touch-action: manipulation;
+        }
+
+        .aurora {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 100%, rgba(0, 255, 0, 0.08) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        #heart-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 2; }
+
+        .lights { 
+            position: absolute; top: 0; width: 100%; display: flex; 
+            justify-content: space-around; z-index: 10; padding: 10px 0;
+        }
+        .light { 
+            width: 12px; height: 12px; border-radius: 50%; 
+            animation: blink 0.8s infinite alternate ease-in-out;
+        }
+        @keyframes blink { 
+            0% { opacity: 0.2; transform: scale(0.8); box-shadow: 0 0 5px currentColor; } 
+            100% { opacity: 0.9; transform: scale(1.2); box-shadow: 0 0 15px currentColor; } 
+        }
+
+        .container { 
+            position: relative; width: 92%; max-width: 420px; height: 620px;
+            z-index: 5; transform-style: preserve-3d; transition: transform 0.5s ease-out;
+        }
+
+        .card {
+            position: absolute; width: 100%; height: 100%; 
+            background: var(--card-green);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 50px; padding: 35px 25px; text-align: center;
+            box-shadow: 0 30px 100px rgba(0,0,0,0.9);
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; pointer-events: none;
+            transform: translateZ(-800px) rotateX(10deg);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            visibility: hidden;
+            color: white;
+        }
+
+        .card::after {
+            content: ''; position: absolute; inset: -2px; border-radius: 50px;
+            padding: 2px; background: linear-gradient(45deg, #004d00, #00ff00, #004d00, #ffffff);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            pointer-events: none; animation: rotateGlow 4s linear infinite;
+        }
+
+        @keyframes rotateGlow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(30deg); } }
+
+        .active-card { opacity: 1 !important; pointer-events: auto !important; transform: translateZ(0) rotateX(0deg) !important; visibility: visible;}
+        .exit-card { opacity: 0 !important; transform: translateZ(500px) translateY(-50px) !important; }
+
+        #myImage {
+            width: 100%; 
+            max-width: 250px;
+            height: auto; 
+            max-height: 200px;
+            border-radius: 15px; 
+            background: rgba(0,0,0,0.3); 
+            object-fit: contain; 
+            margin-bottom: 10px; 
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+            animation: imageGlow 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes imageGlow {
+            0% { box-shadow: 0 0 10px #00ff00; }
+            100% { box-shadow: 0 0 25px #00ff00; }
+        }
+
+        .pro-emoji { 
+            font-size: 3rem; color: #00ff00; 
+            filter: drop-shadow(0 0 15px #00ff00); 
+            margin-bottom: 5px; animation: floatEmoji 4s infinite ease-in-out; 
+        }
+        @keyframes floatEmoji { 
+            0%, 100% { transform: translateY(0) scale(1); } 
+            50% { transform: translateY(-10px) scale(1.05); } 
+        }
+
+        .main-brand { font-family: 'Amiri', serif; font-size: 3rem; background: linear-gradient(to right, #ffffff, #00ff00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        
+        .heart-to-heart {
+            color: #ffffff; font-size: 1.6rem; margin: 5px 0;
+            text-shadow: 0 0 15px #00ff00;
+            font-weight: bold;
+        }
+
+        input { width: 100%; height: 55px; border-radius: 25px; border: 1px solid rgba(0,255,0,0.3); margin: 15px 0; text-align: center; font-size: 1.1rem; background: rgba(0,0,0,0.5); color: #fff; font-family: 'Cairo'; transition: 0.3s; }
+        input:focus { background: rgba(0,0,0,0.8); outline: none; box-shadow: 0 0 20px var(--neon-green); border-color: var(--neon-green); }
+
+        .unlock-btn { width: 100%; min-height: 60px; border-radius: 25px; border: none; background: linear-gradient(45deg, #003300, #008000); color: white; font-weight: bold; font-size: 1.3rem; cursor: pointer; transition: 0.4s; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); }
+
+        .message-box {
+            font-size: 1.05rem; line-height: 1.7; color: #ddd; 
+            overflow-y: auto; max-height: 280px; padding: 20px; 
+            background: rgba(0,0,0,0.5); border-radius: 25px; 
+            text-align: right; border: 1px solid rgba(0,255,0,0.1);
+        }
+
+        @keyframes fallingParticles {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        .falling-particle {
+            position: fixed; top: -10vh; z-index: 100;
+            pointer-events: none; animation: fallingParticles 5s linear infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aurora"></div>
+    <audio id="specialMusic" src="https://files.catbox.moe/cf2f65.mp4" preload="auto"></audio>
+    
+    <canvas id="heart-canvas"></canvas>
+    <div class="lights" id="top-lights"></div>
+
+    <div class="container" id="mainContainer">
+        <div id="step1" class="card active-card">
+            <div style="background:#003300; color: #00ff00; border: 1px solid #00ff00; padding: 5px 25px; border-radius:20px; font-weight:bold; margin-bottom:10px;">2026</div>
+            <span class="pro-emoji">💚</span>
+            <h1 class="main-brand">لأجلِك Rawda</h1>
+            <p style="color: rgba(255,255,255,0.6);">عالمك السحري بانتظارك.. ✨</p>
+            <input type="text" id="passCode" placeholder="ادخلي الباسورد ✨" onkeypress="handleEnter(event)">
+            <button class="unlock-btn" id="loginBtn" onclick="checkPassword()">اضغطي هنا 🌹</button>
+        </div>
+
+        <div id="step2" class="card">
+            <img id="myImage" src="https://files.catbox.moe/q94pht.jpg" alt="Special Image">
+
+            <h3 class="heart-to-heart">from my heart to yours 💚</h3>
+            <div class="message-box">
+                <p>لحظه ادراك أني اول مره اختار صح ويرتني اخترتك من زمان🫶🏻🥹🤍 كل سنة وانتي جوه قلبي ❤️🥰 كل سنه واحنا مع بعض ينور عيني 🥹</p>
+                <p>كل سنه وانتي منور حياتي كلها 🌍✨</p>
+                <p>هنبدا سنه جديده في حياه جديده وكل حاجه هتكون حلوه ان شاء الله عشان انتي معايا يا روح قلبي ♥️😍مش هقولك غير اني بحمد ربنا اني رزقني بيكي يا حته من قلبى ♥️ انتي مثال لحاجات كتير حلوه في حياتي 🥹♥️الطيبه ❤️والجدعنه 👌🏻</p>
+                <p>والحب والامان 😌🥹</p>
+                <p>والضحك والفرفشه 😍🥺</p>
+                <p>والنكد باردو 😂😂🤭</p>
+                <p>انتي وحبيبتي وقلبي وروحي وكل حاجه بجد في حياتي 🌍🥹ربنا يخليكي ليا يارب وميحرمنيش منك ابدا يا نور عيني ❤️😘</p>
+                <p>عايزه اقولك اني ربنا بيحبني علشان انتى معايا 🥹❤️❤️كل سنه واحنا مع بعض عل الحلوه والمره 🥹</p>
+                <p>انتى احلي انسان في الدنيا ياروحي 💗</p>
+                <p>انتى حياتي ربنا يديمك نعمه في حياتي 😚🥰ربنا يخليكي ليا واشوفك بخير دايما 🫂🫶🏻🥹واشوفك اسعد انسان في الدنيا كلها يا حبيت قلبي 💖</p>
+                <p>وكل سنه وانتى فرحان دايما 😍❤️وكل سنه وانتى معايا 🌍🥹🫂 كل سنه واحنا متجمعين على الخير دايما ❤️ربنا يديم الحب ما بينا يا اغلى حاجه عندي في الدنيا كلها 🌍🫂💋</p>
+                <p>🥺❤️❤️ربنا يخليكي ليا ي حيااااااااااااااتي 🫶🏻👩‍❤️‍💋‍👨 وما يحرمنيش منك ابدا يا قلبي ☺️❤️💋♥️♥️♥️♥️♥️♥️♥️♥️♥️بح🤭بك</p>
+                <p>حبيت اقولك اني دى اجمل سنه تعدي عليا بوجودك 🥺🫶🏻مش ندمانه اني اخترتك ولا اني حبيتك بالعكس فخوره باختياري 👌🏻😍♥️♥️♥️مهما اتكلم مقدرش عنك مفيش كلام يوصف حبي ليك 🫂😍♥️علي طول انتي اقرب حد ليا ولي قلبي 💋🫂 ولما بكون معاكي بضحك فعلا من قلبي ❤️وبكون فرحانه وانا جنبك بحبك يا احلي حاجه في حياتي 🌍❤️❤️ وانتي كل حاجه ليا ومقدرش اعيش من غيرك 🥹💞</p>
+                <p>اجمل سنه في حياتي وانا جمبك يا نور عيني ❤️✨🌚🥹🫂</p>
+                
+                <p style="text-align:center; font-weight:bold; color: #00ff00; margin-top:20px;">𝑯𝒂𝒑𝒑𝒚 𝑵𝒆𝒘 𝒀𝒆𝒂𝒓 𝒀𝒂𝒂𝒂𝒂 𝑹𝒂𝒘𝒅𝒂 😚♥️🌚</p>
+            </div>
+            <button class="unlock-btn" onclick="location.reload()" style="margin-top: 15px; min-height: 50px; font-size: 1rem;">إعادة العرض 💚</button>
+        </div>
+    </div>
+
+    <script>
+        const lightsContainer = document.getElementById('top-lights');
+        const lightColors = ['#006600', '#ffffff']; 
+        for(let i=0; i<20; i++) {
+            const light = document.createElement('div');
+            light.className = 'light';
+            light.style.backgroundColor = lightColors[i % 2];
+            light.style.color = lightColors[i % 2];
+            light.style.animationDelay = (i * 0.1) + 's';
+            lightsContainer.appendChild(light);
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('passCode').value;
+            if(pass === "2065") {
+                document.getElementById('step1').classList.add('exit-card');
+                
+                // تشغيل الصوت الخاص بك هنا
+                const audio = document.getElementById('specialMusic');
+                audio.play().catch(error => {
+                    console.log("Audio play failed, waiting for user interaction.");
+                });
+
+                setTimeout(() => {
+                    document.getElementById('step1').classList.remove('active-card');
+                    document.getElementById('step2').classList.add('active-card');
+                    startContinuousCelebration();
+                }, 1000);
+            } else {
+                const btn = document.getElementById('loginBtn');
+                btn.style.animation = 'none';
+                setTimeout(() => btn.style.animation = 'shake 0.4s', 10);
+            }
+        }
+
+        function handleEnter(e) { if(e.key === "Enter") checkPassword(); }
+
+        function startContinuousCelebration() {
+            const particles = ['❤️', '🌹', '💚', '🌸', '✨'];
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.className = 'falling-particle';
+                p.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                p.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                p.style.filter = `drop-shadow(0 0 5px rgba(0,255,0,0.5))`;
+                document.body.appendChild(p);
+                setTimeout(() => { p.remove(); }, 5000);
+            }, 300);
+        }
+
+        const canvas = document.getElementById('heart-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, hearts = [];
+
+        function initHearts() {
+            width = window.innerWidth; height = window.innerHeight;
+            canvas.width = width; canvas.height = height;
+            hearts = [];
+            for(let i=0; i<60; i++) {
+                hearts.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 12 + 8,
+                    speed: Math.random() * 1 + 0.5,
+                    opacity: Math.random() * 0.3 + 0.1
+                });
+            }
+        }
+
+        function drawHearts() {
+            ctx.clearRect(0, 0, width, height);
+            hearts.forEach(h => {
+                ctx.fillStyle = `rgba(0, 255, 0, ${h.opacity})`; 
+                ctx.font = `${h.size}px Arial`;
+                ctx.fillText('💚', h.x, h.y);
+                h.y += h.speed;
+                if(h.y > height) h.y = -20;
+            });
+            requestAnimationFrame(drawHearts);
+        }
+
+        window.addEventListener('resize', initHearts);
+        initHearts();
+        drawHearts();
+    </script>
+</body>
+</html>
